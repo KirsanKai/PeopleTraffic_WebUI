@@ -16,7 +16,7 @@ class App {
             canMove: false,
             scale: 20,
 
-            level: 1,
+            level: 0,
             choiceBuild: null,
             activeBuilds: [],
 
