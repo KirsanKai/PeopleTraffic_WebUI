@@ -23,7 +23,7 @@ class App {
             activePeople: [],
             peopleCoordinate: [],
             maxNumPeople: 5, 
-            peopleDen: 1.6,
+            peopleDen: 1,
             peopleR: 0.1,
             label: 0,
             exitedLabel: 0
