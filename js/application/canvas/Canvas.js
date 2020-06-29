@@ -16,7 +16,6 @@ class Canvas {
         this.memCanvas.width = this.canvasContainer.clientWidth;
         this.memCanvas.height = this.canvasContainer.clientHeight;
         this.memContext = this.memCanvas.getContext("2d");
-
     }
     
     fill(color) {

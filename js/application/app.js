@@ -80,6 +80,19 @@ class App {
                     break;
             }
         });
+        document.addEventListener('wheel', (event) => {
+            let dir = Math.sign(event.deltaY);
+            switch (dir) {
+                case -1: // Увеличить zoom
+                    this.data.scale+=0.5;
+                    break;
+                case +1: // Уменьшить zoom
+                    this.data.scale-=0.5;
+                    break;
+            }
+            this.logic.updateBuildsInCamera();
+            this.logic.updatePeopleInCamera();
+        });
         this.canvas.canvas.addEventListener('mousedown', () => { this.data.canMove = true; });
         this.canvas.canvas.addEventListener('mouseup', () => { this.data.canMove = false; });
         this.canvas.canvas.addEventListener('mouseout', () => { this.data.canMove = false; });
