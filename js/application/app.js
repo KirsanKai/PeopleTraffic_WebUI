@@ -70,7 +70,7 @@ class App {
             this.logic.updateBuildsInCamera();
             this.logic.updatePeopleInCamera();
         });
-        document.addEventListener('wheel', (event) => {
+        document.getElementById('canvas_container').addEventListener('wheel', (event) => {
             let dir = Math.sign(event.deltaY);
             switch (dir) {
                 case -1: // Увеличить zoom
@@ -91,7 +91,7 @@ class App {
             this.logic.toChoiceBuild(event);
         });
         let timerRenderId = setInterval(() => this.updateField(), 100);
-        let timerTimeDataUpdateId = setInterval(() => this.updateTimeData(), 1000);
+        let timerTimeDataUpdateId = setInterval(() => this.updateTimeData(), 500);
     }
 
     updateField() {
