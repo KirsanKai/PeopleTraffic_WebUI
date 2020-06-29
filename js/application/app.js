@@ -7,7 +7,7 @@ class App {
         this.mathem = new Mathem();
         this.data = {
             struct: this.server.data,
-            timerTimeDataUpdatePause: false,
+            timerTimeDataUpdatePause: true,
             timeData: timeData,
             time: 0,
             timeStep: 1,
