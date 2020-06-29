@@ -8,6 +8,7 @@ class App {
         this.data = {
             struct: this.server.data,
             timerTimeDataUpdatePause: true,
+            timerSpeedUp: 1,
             timeData: timeData,
             time: 0,
             timeStep: 1,
@@ -91,7 +92,7 @@ class App {
             this.logic.toChoiceBuild(event);
         });
         let timerRenderId = setInterval(() => this.updateField(), 100);
-        let timerTimeDataUpdateId = setInterval(() => this.updateTimeData(), 500);
+        let timerTimeDataUpdateId = setInterval(() => this.updateTimeData(), 1000);
     }
 
     updateField() {
