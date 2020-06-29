@@ -50,35 +50,25 @@ class App {
             switch (event.keyCode) {
                 // Повысить этаж
                 case 38: 
-                    if (this.data.level + 1 < this.data.struct.Level.length) {
-                        this.data.level++;
-                        this.logic.updateBuildsInCamera();
-                        this.logic.updatePeopleInCamera();
-                    }
+                    this.data.level += (this.data.level + 1 < this.data.struct.Level.length) ? 1 : 0;
                     break;
                 // Понизить этаж
                 case 40:
-                    if (this.data.level - 1 >= 0) {
-                        this.data.level--;
-                        this.logic.updateBuildsInCamera();
-                        this.logic.updatePeopleInCamera();
-                    }
+                    this.data.level -= (this.data.level - 1 >= 0) ? 1 : 0;
                     break;
                 // Увеличить zoom
                 case 107:
                 case 187:
                     this.data.scale++;
-                    this.logic.updateBuildsInCamera();
-                    this.logic.updatePeopleInCamera();
                     break;
                 // Уменьшить zoom
                 case 189:
                 case 109:
                     this.data.scale--;
-                    this.logic.updateBuildsInCamera();
-                    this.logic.updatePeopleInCamera();
                     break;
             }
+            this.logic.updateBuildsInCamera();
+            this.logic.updatePeopleInCamera();
         });
         document.addEventListener('wheel', (event) => {
             let dir = Math.sign(event.deltaY);
