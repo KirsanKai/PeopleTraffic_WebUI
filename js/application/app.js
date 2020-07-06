@@ -7,7 +7,8 @@ class App {
         this.mathem = new Mathem();
         this.data = {
             struct: this.server.data,
-            timerTimeDataUpdatePause: false,
+            timerTimeDataUpdatePause: true,
+            timerSpeedUp: 1,
             timeData: timeData,
             time: 0,
             timeStep: 1,
@@ -16,15 +17,15 @@ class App {
             canMove: false,
             scale: 20,
 
-            level: 1,
+            level: 0,
             choiceBuild: null,
             activeBuilds: [],
 
             activePeople: [],
             peopleCoordinate: [],
-            maxNumPeople: 5, 
-            peopleDen: 1.6,
-            peopleR: 0.1,
+            maxNumPeople: 5,
+            peopleDen: 1,
+            peopleR: 0.25,
             label: 0,
             exitedLabel: 0
         }
@@ -50,35 +51,38 @@ class App {
             switch (event.keyCode) {
                 // Повысить этаж
                 case 38: 
-                    if (this.data.level + 1 < this.data.struct.Level.length) {
-                        this.data.level++;
-                        this.logic.updateBuildsInCamera();
-                        this.logic.updatePeopleInCamera();
-                    }
+                    this.data.level += (this.data.level + 1 < this.data.struct.Level.length) ? 1 : 0;
                     break;
                 // Понизить этаж
                 case 40:
-                    if (this.data.level - 1 >= 0) {
-                        this.data.level--;
-                        this.logic.updateBuildsInCamera();
-                        this.logic.updatePeopleInCamera();
-                    }
+                    this.data.level -= (this.data.level - 1 >= 0) ? 1 : 0;
                     break;
                 // Увеличить zoom
                 case 107:
                 case 187:
                     this.data.scale++;
-                    this.logic.updateBuildsInCamera();
-                    this.logic.updatePeopleInCamera();
                     break;
                 // Уменьшить zoom
                 case 189:
                 case 109:
                     this.data.scale--;
-                    this.logic.updateBuildsInCamera();
-                    this.logic.updatePeopleInCamera();
                     break;
             }
+            this.logic.updateBuildsInCamera();
+            this.logic.updatePeopleInCamera();
+        });
+        document.getElementById('canvas_container').addEventListener('wheel', (event) => {
+            let dir = Math.sign(event.deltaY);
+            switch (dir) {
+                case -1: // Увеличить zoom
+                    this.data.scale+=0.5;
+                    break;
+                case +1: // Уменьшить zoom
+                    this.data.scale-=0.5;
+                    break;
+            }
+            this.logic.updateBuildsInCamera();
+            this.logic.updatePeopleInCamera();
         });
         this.canvas.canvas.addEventListener('mousedown', () => { this.data.canMove = true; });
         this.canvas.canvas.addEventListener('mouseup', () => { this.data.canMove = false; });
