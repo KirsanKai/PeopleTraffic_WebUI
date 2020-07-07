@@ -16,8 +16,10 @@ class App {
             cameraXY: { x: 0, y: 0 },
             canMove: false,
             scale: 20,
+            fieldWidth: this.canvas.canvas.width,
+            fieldHeight: this.canvas.canvas.height,
 
-            level: 0,
+            level: 3,
             choiceBuild: null,
             activeBuilds: [],
 
@@ -41,7 +43,8 @@ class App {
     }
 
     init() {
-        this.logic.updateBuildsInCamera();
+        this.logic.toInitialCoordination();
+        this.logic.toScreenAdjustment();
         this.logic.updatePeopleInBuilds();
         this.logic.updatePeopleInCamera();
         this.logic.updateLabel();
@@ -61,11 +64,13 @@ class App {
                 case 107:
                 case 187:
                     this.data.scale++;
+                    console.log(this.data.scale);
                     break;
                 // Уменьшить zoom
                 case 189:
                 case 109:
                     this.data.scale--;
+                    console.log(this.data.scale);
                     break;
             }
             this.logic.updateBuildsInCamera();
