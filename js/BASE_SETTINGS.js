@@ -8,6 +8,8 @@ class BASE_SETTINGS {
         this.SERVER = {
             
         }
-
+        this.GIFGENERATOR = {
+            
+        }
     }
 }

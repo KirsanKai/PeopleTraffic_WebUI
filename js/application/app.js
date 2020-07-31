@@ -7,12 +7,14 @@ class App {
         this.mathem = new Mathem();
         this.data = {
             struct: this.server.data,
-            timerTimeDataUpdatePause: true,
+            timerTimeDataUpdatePause: false,
             timerSpeedUp: 1,
             timeData: timeData,
             time: 0,
             timeStep: 1,
             
+            gifFinish: false,
+
             cameraXY: { x: 0, y: 0 },
             canMove: false,
             scale: 20,
@@ -34,12 +36,10 @@ class App {
         this.view = new View({ canvas: this.canvas, data: this.data, mathem: this.mathem });
         this.ui = new UI({ data: this.data, mathem: this.mathem });
         this.logic = new Logic({ view: this.view, ui: this.ui, data: this.data, mathem: this.mathem });
-
+        this.encoder = new GIFEncoder();
 
         // Инициализация первичных настроек
         this.init();
-
-
     }
 
     init() {
@@ -96,8 +96,17 @@ class App {
         this.canvas.canvas.addEventListener('dblclick', (event) => {
             this.logic.toChoiceBuild(event);
         });
+
+        this.gifInit(1000); // Инициализация настроек 
+        
         let timerRenderId = setInterval(() => this.updateField(), 100);
         let timerTimeDataUpdateId = setInterval(() => this.updateTimeData(), 1000);
+        // Закончить GIF и создать её
+        let timerGifFinish = setTimeout(() => {
+            this.data.gifFinish = true;
+            this.encoder.finish();
+            this.encoder.download("newGif.gif");
+        }, 5500); 
     }
 
     updateField() {
@@ -112,6 +121,23 @@ class App {
             this.logic.updatePeopleInCamera();
             this.logic.updateLabel();
             this.ui.updateUI();
+            if (!this.data.gifFinish) {
+                this.gifNewFrame();
+            }
         }
     }
+
+    // Инициализация настроек
+    gifInit(delayTimer) {
+        this.encoder.start();
+        this.encoder.setRepeat(0);
+        this.encoder.setDelay(delayTimer);
+        this.encoder.setSize(this.canvas.canvas.width, this.canvas.canvas.height);
+    }
+
+    // Добавить новый кадр
+    gifNewFrame() {
+        this.encoder.addFrame(this.canvas.memContext);
+    }
+
 }
