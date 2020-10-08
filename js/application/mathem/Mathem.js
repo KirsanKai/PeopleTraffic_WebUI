@@ -78,4 +78,27 @@ class Mathem {
         }
         return c;
     }
+
+    isIntersection(a1, a2, b1, b2) {
+        const v1 = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
+        const v2 = (b2.x - b1.x) * (a2.y - b1.y) - (b2.y - b1.y) * (a2.x - b1.x);
+        const v3 = (a2.x - a1.x) * (b1.y - a1.y) - (a2.y - a1.y) * (b1.x - a1.x);
+        const v4 = (a2.x - a1.x) * (b2.y - a1.y) - (a2.y - a1.y) * (b2.x - a1.x);
+        if ((v1 * v2 < 0) && (v3 * v4 < 0)) {
+            return true;
+        }
+        return false
+    }
+
+    getHypotenuseLength(x1, x2, y1, y2) {
+        const x = x2 - x1;
+        const y = y2 - y1;
+        return Math.sqrt(x * x + y * y);
+    }
+
+    getCenterPoint(XY) {
+        const maxXY = this.toCalculateMaxXY(XY);
+        const minXY = this.toCalculateMinXY(XY);
+        return { x: (maxXY.x - minXY.x) / 2 + minXY.x, y: (maxXY.y - minXY.y) / 2 + minXY.y };
+    }
 }

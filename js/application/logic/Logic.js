@@ -25,6 +25,16 @@ class Logic {
         return false;
     }
 
+    updateCurrentTimeData() {
+        this.data.currentTimeData = null;
+        for (let i = 0; i < timeData.items.length; i++) {
+            if (this.data.time == Math.floor(timeData.items[i].time)) {
+                this.data.currentTimeData = timeData.items[i];
+                break;
+            }
+        }
+    }
+
     // Обновить список объектов в поле камеры
     updateBuildsInCamera() {
         this.data.activeBuilds = [];
@@ -37,15 +47,8 @@ class Logic {
     }
 
     updateLabel() {
-        const timeData = this.data.timeData.items;
-        let rooms;
-        for (let i = 0; i < timeData.length; i++) {
-            if (this.data.time == Math.floor(timeData[i].time)) {
-                rooms = timeData[i].rooms;
-                break;
-            }
-        }
-        let label  = 0;
+        let rooms = this.data.currentTimeData.rooms;
+        let label = 0;
         for (let i = 0; i < rooms.length; i++) {
             label += rooms[i].density;
         }
@@ -56,6 +59,21 @@ class Logic {
         this.data.label = label;
     }
 
+    updateDirectionInCamera() {
+        this.data.activeDirection = [];
+        const activeBuilds = this.data.activeBuilds;
+        const doors = this.data.currentTimeData.doors;
+        for (let i = 0; i < activeBuilds.length; i++) {
+            for (let j = 0; j < doors.length; j++) { 
+                if (doors[j].uuid == activeBuilds[i].Id) {
+                    this.data.activeDirection.push(doors[j]);
+                    this.data.activeDirection[this.data.activeDirection.length - 1].doorLink = activeBuilds[i];
+                    break;
+                }
+            }
+            
+        }
+    }
 
     updatePeopleInCamera() {
         this.data.activePeople = [];
@@ -65,6 +83,7 @@ class Logic {
             for (let j = 0; j < people.length; j++) {
                 if (activeBuilds[i].Id == people[j].uuid) {
                     this.data.activePeople.push(people[j]);
+                    activeBuilds[i].roomLink = people[j].roomLink;
                     break;
                 }
             }
@@ -74,14 +93,7 @@ class Logic {
     updatePeopleInBuilds() {
         this.data.peopleCoordinate = [];
         const levels = this.struct.Level;
-        const timeData = this.data.timeData.items;
-        let rooms;
-        for (let i = 0; i < timeData.length; i++) {
-            if (this.data.time == Math.floor(timeData[i].time)) {
-                rooms = timeData[i].rooms;
-                break;
-            }
-        }
+        let rooms = this.data.currentTimeData.rooms;
         if (rooms) {
             for (let i = 0; i < rooms.length; i++) {
                 for (let j = 0; j < levels.length; j++) {
@@ -89,7 +101,7 @@ class Logic {
                     for (let k = 0; k < levels[j].BuildElement.length; k++) {
                         if (rooms[i].uuid == levels[j].BuildElement[k].Id) {
                             const XY = this.genPeopleCoordinate(levels[j].BuildElement[k], rooms[i].density);
-                            this.data.peopleCoordinate.push({ uuid: rooms[i].uuid, XY: XY });
+                            this.data.peopleCoordinate.push({ uuid: rooms[i].uuid, XY: XY, roomLink: rooms[i] });
                             ok = true;
                             break;
                         }

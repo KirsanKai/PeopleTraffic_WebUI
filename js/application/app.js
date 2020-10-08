@@ -10,6 +10,7 @@ class App {
             timerTimeDataUpdatePause: true,
             timerSpeedUp: 1,
             timeData: timeData,
+            currentTimeData: null,
             time: 0,
             timeStep: 1,
             
@@ -26,6 +27,7 @@ class App {
             level: 0,
             choiceBuild: null,
             activeBuilds: [],
+            activeDirection: [],
 
             activePeople: [],
             peopleCoordinate: [],
@@ -45,6 +47,7 @@ class App {
     }
 
     init() {
+        this.logic.updateCurrentTimeData();
         this.logic.toInitialCoordination();
         this.logic.toScreenAdjustment();
         this.logic.updatePeopleInBuilds();
@@ -77,6 +80,7 @@ class App {
             }
             this.logic.updateBuildsInCamera();
             this.logic.updatePeopleInCamera();
+            this.logic.updateDirectionInCamera();
         });
         document.getElementById('canvas_container').addEventListener('wheel', (event) => {
             let dir = Math.sign(event.deltaY);
@@ -99,7 +103,7 @@ class App {
             this.logic.toChoiceBuild(event);
         });
 
-        this.gifInit(1000); // Инициализация настроек 
+        //this.gifInit(1000); // Инициализация настроек 
         
         let timerRenderId = setInterval(() => this.updateField(), 100);
         let timerTimeDataUpdateId = setInterval(() => this.updateTimeData(), 500);
@@ -119,11 +123,13 @@ class App {
     updateTimeData() {
         if (!this.data.timerTimeDataUpdatePause) {
             this.data.time += this.data.timeStep;
+            this.logic.updateCurrentTimeData();
             this.logic.updatePeopleInBuilds();
             this.logic.updatePeopleInCamera();
+            this.logic.updateDirectionInCamera();
             this.logic.updateLabel();
             this.ui.updateUI();
-            this.gifNewFrame();
+            //this.gifNewFrame();
         }
 
         if (this.data.isGifStop) {
