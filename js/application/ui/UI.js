@@ -44,6 +44,7 @@ class UI {
         document.getElementById('pause').addEventListener('click', () => {
             if (this.data.timerTimeDataUpdatePause == false) {
                 this.data.timerTimeDataUpdatePause = true;
+                this.data.isGifStop = true;
             }
         });
         document.getElementById('play').addEventListener('click', () => {

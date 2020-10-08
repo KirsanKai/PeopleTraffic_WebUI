@@ -7,13 +7,15 @@ class App {
         this.mathem = new Mathem();
         this.data = {
             struct: this.server.data,
-            timerTimeDataUpdatePause: false,
+            timerTimeDataUpdatePause: true,
             timerSpeedUp: 1,
             timeData: timeData,
             time: 0,
             timeStep: 1,
             
             gifFinish: false,
+            isGifStop: false,
+            passFrame: 0,
 
             cameraXY: { x: 0, y: 0 },
             canMove: false,
@@ -21,7 +23,7 @@ class App {
             fieldWidth: this.canvas.canvas.width,
             fieldHeight: this.canvas.canvas.height,
 
-            level: 3,
+            level: 0,
             choiceBuild: null,
             activeBuilds: [],
 
@@ -100,13 +102,13 @@ class App {
         this.gifInit(1000); // Инициализация настроек 
         
         let timerRenderId = setInterval(() => this.updateField(), 100);
-        let timerTimeDataUpdateId = setInterval(() => this.updateTimeData(), 1000);
+        let timerTimeDataUpdateId = setInterval(() => this.updateTimeData(), 500);
         // Закончить GIF и создать её
-        let timerGifFinish = setTimeout(() => {
-            this.data.gifFinish = true;
-            this.encoder.finish();
-            this.encoder.download("newGif.gif");
-        }, 5500); 
+        // let timerGifFinish = setTimeout(() => {
+        //     this.data.gifFinish = true;
+        //     this.encoder.finish();
+        //     this.encoder.download("newGif.gif");
+        // }, 5500);
     }
 
     updateField() {
@@ -121,9 +123,13 @@ class App {
             this.logic.updatePeopleInCamera();
             this.logic.updateLabel();
             this.ui.updateUI();
-            if (!this.data.gifFinish) {
-                this.gifNewFrame();
-            }
+            this.gifNewFrame();
+        }
+
+        if (this.data.isGifStop) {
+            this.encoder.finish();
+            this.encoder.download("newGif.gif");
+            this.data.isGifStop = false;
         }
     }
 
