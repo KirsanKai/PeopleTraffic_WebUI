@@ -42,6 +42,15 @@ class Logic {
         for (let i = 0; i < builds.length; i++) {
             if (this.isInCamera(builds[i].XY[0].points)) {
                 this.data.activeBuilds.push(builds[i]);
+                const build = this.data.activeBuilds[this.data.activeBuilds.length - 1];
+                for (let j = 0; j < this.data.blocking.elements.length; j++) {
+                    const block = this.data.blocking.elements[j];
+                    if (block.uuid == build.Id && block.time - 0 <= this.data.time - 0) {
+                        build.isBlock = true;
+                    } else {
+                        build.isBlock = false;
+                    }
+                }
             }
         }
     }

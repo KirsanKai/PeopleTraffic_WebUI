@@ -16,9 +16,14 @@ class View {
     
     // Отрисовка комнаты
     drawBuild(build) {
+        let RGB
+        if (build.isBlock) {
+            RGB = 'rgb(128,128,128)';
+        } else {
+            RGB = 'rgb(255,255,255)';
+        }
         this.canvas.beginPath();
         this.drawBox(build.XY[0].points);
-        const RGB = 'rgb(255,255,255)';
         this.canvas.fill(RGB);
         this.canvas.closePath();
     }

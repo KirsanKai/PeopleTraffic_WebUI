@@ -7,6 +7,16 @@ class App {
         this.mathem = new Mathem();
         this.data = {
             struct: this.server.data,
+            blocking: {
+                doors: [],
+                elements: [
+                    {
+                        uuid: "8a1ff353-de4d-429b-95e6-dc5744d2a8cb",
+                        time: 10
+                    }
+                ]
+            },
+
             timerTimeDataUpdatePause: true,
             timerSpeedUp: 1,
             timeData: timeData,
@@ -124,6 +134,7 @@ class App {
         if (!this.data.timerTimeDataUpdatePause) {
             this.data.time += this.data.timeStep;
             this.logic.updateCurrentTimeData();
+            this.logic.updateBuildsInCamera();
             this.logic.updatePeopleInBuilds();
             this.logic.updatePeopleInCamera();
             this.logic.updateDirectionInCamera();
